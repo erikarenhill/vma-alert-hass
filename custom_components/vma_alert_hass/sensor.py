@@ -46,6 +46,7 @@ class VMADataUpdateCoordinator(DataUpdateCoordinator):
         )
         self.data = {"latest_alert": None, "active_alerts": [], "last_update": None}
         self.test_mode = False
+        self.last_alert_id = None
 
     async def _async_update_data(self):
         """Fetch data from API."""
@@ -71,8 +72,14 @@ class VMADataUpdateCoordinator(DataUpdateCoordinator):
             
             _LOGGER.debug("Processed %d active alerts", len(active_alerts))
 
+            latest_alert = active_alerts[0] if active_alerts else None
+            if latest_alert and latest_alert["identifier"] != self.last_alert_id:
+                self.last_alert_id = latest_alert["identifier"]
+                self.hass.bus.async_fire("vma_new_alert", latest_alert)
+                _LOGGER.info("New VMA alert detected: %s", latest_alert["identifier"])
+
             return {
-                "latest_alert": active_alerts[0] if active_alerts else None,
+                "latest_alert": latest_alert,
                 "active_alerts": active_alerts,
                 "last_update": dt_util.utcnow()
             }

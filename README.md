@@ -47,3 +47,32 @@ After installation and configuration, you'll have the following entities:
 - `switch.vma_test_mode`: Toggles between the live API and the test API.
 
 You can use these entities in your automations, scripts, and Lovelace UI.
+
+
+## HOW TO SEND NOTIFICATION
+
+Set up a new automation with trigger EVENT, type in "vma_new_alert" and leave the data field empty.
+
+On actions, add a notification, then move over to manual yaml editing mode and copy paste this:
+
+data:
+  title: 'VMA Alert: {{ trigger.event.data.info[0].event }}'
+  message: >
+    {{ trigger.event.data.info[0].description }} Urgency: {{
+    trigger.event.data.info[0].urgency }} Severity: {{
+    trigger.event.data.info[0].severity }} Certainty: {{
+    trigger.event.data.info[0].certainty }} Affected Area: {{
+    trigger.event.data.info[0].area[0].areaDesc }}
+action: notify.YOUR_NOTIFICATION_SERVICE_HERE # <--------- dont forget to change this
+
+## HOW TO TEST
+
+Go to developer tools, actions then trigger VMA Alert: simulate_vma_event
+this will send a fake event on the bus for the vma_new_alert
+
+OR
+
+Switch on the Test mode, exposed as a control switch on the device for the integration.
+
+
+

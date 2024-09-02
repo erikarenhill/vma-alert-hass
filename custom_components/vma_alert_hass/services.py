@@ -50,6 +50,6 @@ def setup_services(hass: HomeAssistant) -> None:
             }]
         }
 
-        hass.bus.fire("vma_alert_event", simulated_data)
+        hass.bus.fire("vma_new_alert", simulated_data)
 
     hass.services.async_register(DOMAIN, "simulate_vma_event", simulate_vma_event)
