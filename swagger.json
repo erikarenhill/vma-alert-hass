@@ -1,0 +1,799 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "Sveriges Radio's API for Important Public Announcements",
+      "description": "This API will update as new important public announcements are made available by Sveriges Radio.\r\n\r\nThere are two versions of this API running in parallel. The real version, which you can identify by the /api part of the URL, and a development version which is available under /testapi. The development API will be regularly updated with dummy data to allow you to see how your application will react on real events.<br><br><a href=\"/releasenotes\">API release notes</a>",
+      "version": "v2"
+    },
+    "paths": {
+      "/Api/v2/alerts": {
+        "get": {
+          "tags": [
+            "Api"
+          ],
+          "summary": "Get a list of all current alerts",
+          "description": " When using the formats .json or .xml, all content about the alerts will be included in the result.\r\n \r\nWhen using the format .atom or.rss, the result will include basic information about the respective alert, along with a link to the full message in CAP format.\r\n\r\nIt is important to check the alert status. An alert marked actual is an actual, currently active important public announcement. An alert marked test is an active test announcement. More statuses might be used in the future.\r\n\r\nAn alert with msgType \"Cancel\" is a previous actual or test announcement that no longer applies.\r\n \r\nEach announcement will subsequently have two alerts associated with it. First an actual message will be emitted. When the announcement no longer applies, the previous message will be replaced by the cancel message. The actual and cancel messages will have different CAP identifiers, but the same incident identifier (beginning with SRVMA).\r\n\r\nEnglish translation of the alert info is not yet released on the real api, but can be viewed in the test api. Translated info objects might be added to the alert with a delay.",
+          "parameters": [
+            {
+              "name": "geoCode",
+              "in": "query",
+              "description": "GeoCodes are 2 or 4-digit numbers representing areas in Sweden, <a href=\"https://www.scb.se/hitta-statistik/regional-statistik-och-kartor/regionala-indelningar/lan-och-kommuner/lan-och-kommuner-i-kodnummerordning\">as specified by SCB</a>. If the geocode is releated to a Swedish counties (län) it has two digits. When supplying a county geocode, you will also get alerts for all Swedish municipalities (kommuner) within the county.",
+              "schema": {
+                "type": "string"
+              },
+              "example": "00"
+            },
+            {
+              "name": "ext",
+              "in": "query",
+              "description": "The default format for alerts is: json. Supported extensions are: rss, atom, json, xml",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "This call should always return 200 OK and contain valid content.",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/Api/v2/alerts/index.{ext}": {
+        "get": {
+          "tags": [
+            "Api"
+          ],
+          "summary": "Get a list of all current alerts",
+          "description": " When using the formats .json or .xml, all content about the alerts will be included in the result.\r\n \r\nWhen using the format .atom or.rss, the result will include basic information about the respective alert, along with a link to the full message in CAP format.\r\n\r\nIt is important to check the alert status. An alert marked actual is an actual, currently active important public announcement. An alert marked test is an active test announcement. More statuses might be used in the future.\r\n\r\nAn alert with msgType \"Cancel\" is a previous actual or test announcement that no longer applies.\r\n \r\nEach announcement will subsequently have two alerts associated with it. First an actual message will be emitted. When the announcement no longer applies, the previous message will be replaced by the cancel message. The actual and cancel messages will have different CAP identifiers, but the same incident identifier (beginning with SRVMA).\r\n\r\nEnglish translation of the alert info is not yet released on the real api, but can be viewed in the test api. Translated info objects might be added to the alert with a delay.",
+          "parameters": [
+            {
+              "name": "geoCode",
+              "in": "query",
+              "description": "GeoCodes are 2 or 4-digit numbers representing areas in Sweden, <a href=\"https://www.scb.se/hitta-statistik/regional-statistik-och-kartor/regionala-indelningar/lan-och-kommuner/lan-och-kommuner-i-kodnummerordning\">as specified by SCB</a>. If the geocode is releated to a Swedish counties (län) it has two digits. When supplying a county geocode, you will also get alerts for all Swedish municipalities (kommuner) within the county.",
+              "schema": {
+                "type": "string"
+              },
+              "example": "00"
+            },
+            {
+              "name": "ext",
+              "in": "path",
+              "description": "The default format for alerts is: json. Supported extensions are: rss, atom, json, xml",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "This call should always return 200 OK and contain valid content.",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/Api/v2/alerts/{geoCode}": {
+        "get": {
+          "tags": [
+            "Api"
+          ],
+          "summary": "Get a list of all current alerts",
+          "description": " When using the formats .json or .xml, all content about the alerts will be included in the result.\r\n \r\nWhen using the format .atom or.rss, the result will include basic information about the respective alert, along with a link to the full message in CAP format.\r\n\r\nIt is important to check the alert status. An alert marked actual is an actual, currently active important public announcement. An alert marked test is an active test announcement. More statuses might be used in the future.\r\n\r\nAn alert with msgType \"Cancel\" is a previous actual or test announcement that no longer applies.\r\n \r\nEach announcement will subsequently have two alerts associated with it. First an actual message will be emitted. When the announcement no longer applies, the previous message will be replaced by the cancel message. The actual and cancel messages will have different CAP identifiers, but the same incident identifier (beginning with SRVMA).\r\n\r\nEnglish translation of the alert info is not yet released on the real api, but can be viewed in the test api. Translated info objects might be added to the alert with a delay.",
+          "parameters": [
+            {
+              "name": "geoCode",
+              "in": "path",
+              "description": "GeoCodes are 2 or 4-digit numbers representing areas in Sweden, <a href=\"https://www.scb.se/hitta-statistik/regional-statistik-och-kartor/regionala-indelningar/lan-och-kommuner/lan-och-kommuner-i-kodnummerordning\">as specified by SCB</a>. If the geocode is releated to a Swedish counties (län) it has two digits. When supplying a county geocode, you will also get alerts for all Swedish municipalities (kommuner) within the county.",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "example": "00"
+            },
+            {
+              "name": "ext",
+              "in": "query",
+              "description": "The default format for alerts is: json. Supported extensions are: rss, atom, json, xml",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "This call should always return 200 OK and contain valid content.",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/Api/v2/alerts/{geoCode}/index.{ext}": {
+        "get": {
+          "tags": [
+            "Api"
+          ],
+          "summary": "Get a list of all current alerts",
+          "description": " When using the formats .json or .xml, all content about the alerts will be included in the result.\r\n \r\nWhen using the format .atom or.rss, the result will include basic information about the respective alert, along with a link to the full message in CAP format.\r\n\r\nIt is important to check the alert status. An alert marked actual is an actual, currently active important public announcement. An alert marked test is an active test announcement. More statuses might be used in the future.\r\n\r\nAn alert with msgType \"Cancel\" is a previous actual or test announcement that no longer applies.\r\n \r\nEach announcement will subsequently have two alerts associated with it. First an actual message will be emitted. When the announcement no longer applies, the previous message will be replaced by the cancel message. The actual and cancel messages will have different CAP identifiers, but the same incident identifier (beginning with SRVMA).\r\n\r\nEnglish translation of the alert info is not yet released on the real api, but can be viewed in the test api. Translated info objects might be added to the alert with a delay.",
+          "parameters": [
+            {
+              "name": "geoCode",
+              "in": "path",
+              "description": "GeoCodes are 2 or 4-digit numbers representing areas in Sweden, <a href=\"https://www.scb.se/hitta-statistik/regional-statistik-och-kartor/regionala-indelningar/lan-och-kommuner/lan-och-kommuner-i-kodnummerordning\">as specified by SCB</a>. If the geocode is releated to a Swedish counties (län) it has two digits. When supplying a county geocode, you will also get alerts for all Swedish municipalities (kommuner) within the county.",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "example": "00"
+            },
+            {
+              "name": "ext",
+              "in": "path",
+              "description": "The default format for alerts is: json. Supported extensions are: rss, atom, json, xml",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "This call should always return 200 OK and contain valid content.",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/Api/v2/cap/{identifier}": {
+        "get": {
+          "tags": [
+            "Api"
+          ],
+          "summary": "Returns the matching CAP Alert/Cancel message.",
+          "parameters": [
+            {
+              "name": "identifier",
+              "in": "path",
+              "description": "Identifier is used to match on the value given in the Identifier or Incidents fields.\r\n\r\nIdentifiers look like this: SRCAPXXXXXXXXXXXXXXI, where all X:es have been replaced by digits. The identifier is used to match on the value given in the Identifier or Incidents fields.",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the matching CAP Alert/Cancel message. Content will be of type application/cap+xml.",
+              "content": {
+                "application/cap+xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Alert"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "If the identifier is invalid or not found, 404 will be returned."
+            }
+          }
+        }
+      },
+      "/TestApi/v2/alerts": {
+        "get": {
+          "tags": [
+            "TestApi"
+          ],
+          "summary": "Get a list of all current alerts",
+          "description": " When using the formats .json or .xml, all content about the alerts will be included in the result.\r\n \r\nWhen using the format .atom or.rss, the result will include basic information about the respective alert, along with a link to the full message in CAP format.\r\n\r\nIt is important to check the alert status. An alert marked actual is an actual, currently active important public announcement. An alert marked test is an active test announcement. An alert marked cancel is a previous actual or test announcement that no longer applies. More statuses might be used in the future.\r\n \r\nEach announcement will subsequently have two alerts associated with it. First an actual message will be emitted. When the announcement no longer applies, the previous message will be replaced by the cancel message. The actual and cancel messages will have different CAP identifiers, but the same incident identifier (beginning with SRVMA).\r\n\r\nEnglish translation of the alert info is not yet released on real api, but can be viewed in the test api. Translated info objects will be added to the alert with a delay.",
+          "parameters": [
+            {
+              "name": "geoCode",
+              "in": "query",
+              "description": "GeoCodes are 2 or 4-digit numbers representing areas in Sweden, <a href=\"https://www.scb.se/hitta-statistik/regional-statistik-och-kartor/regionala-indelningar/lan-och-kommuner/lan-och-kommuner-i-kodnummerordning\">as specified by SCB</a>. If the geocode is releated to a Swedish counties (län) it has two digits. When supplying a county geocode, you will also get alerts for all Swedish municipalities (kommuner) within the county.",
+              "schema": {
+                "type": "string"
+              },
+              "example": "00"
+            },
+            {
+              "name": "ext",
+              "in": "query",
+              "description": "The default format for alerts is: json. Supported extensions are: rss, atom, json, xml",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "This call should always return 200 OK and contain valid content.",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/TestApi/v2/alerts/index.{ext}": {
+        "get": {
+          "tags": [
+            "TestApi"
+          ],
+          "summary": "Get a list of all current alerts",
+          "description": " When using the formats .json or .xml, all content about the alerts will be included in the result.\r\n \r\nWhen using the format .atom or.rss, the result will include basic information about the respective alert, along with a link to the full message in CAP format.\r\n\r\nIt is important to check the alert status. An alert marked actual is an actual, currently active important public announcement. An alert marked test is an active test announcement. An alert marked cancel is a previous actual or test announcement that no longer applies. More statuses might be used in the future.\r\n \r\nEach announcement will subsequently have two alerts associated with it. First an actual message will be emitted. When the announcement no longer applies, the previous message will be replaced by the cancel message. The actual and cancel messages will have different CAP identifiers, but the same incident identifier (beginning with SRVMA).\r\n\r\nEnglish translation of the alert info is not yet released on real api, but can be viewed in the test api. Translated info objects will be added to the alert with a delay.",
+          "parameters": [
+            {
+              "name": "geoCode",
+              "in": "query",
+              "description": "GeoCodes are 2 or 4-digit numbers representing areas in Sweden, <a href=\"https://www.scb.se/hitta-statistik/regional-statistik-och-kartor/regionala-indelningar/lan-och-kommuner/lan-och-kommuner-i-kodnummerordning\">as specified by SCB</a>. If the geocode is releated to a Swedish counties (län) it has two digits. When supplying a county geocode, you will also get alerts for all Swedish municipalities (kommuner) within the county.",
+              "schema": {
+                "type": "string"
+              },
+              "example": "00"
+            },
+            {
+              "name": "ext",
+              "in": "path",
+              "description": "The default format for alerts is: json. Supported extensions are: rss, atom, json, xml",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "This call should always return 200 OK and contain valid content.",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/TestApi/v2/alerts/{geoCode}": {
+        "get": {
+          "tags": [
+            "TestApi"
+          ],
+          "summary": "Get a list of all current alerts",
+          "description": " When using the formats .json or .xml, all content about the alerts will be included in the result.\r\n \r\nWhen using the format .atom or.rss, the result will include basic information about the respective alert, along with a link to the full message in CAP format.\r\n\r\nIt is important to check the alert status. An alert marked actual is an actual, currently active important public announcement. An alert marked test is an active test announcement. An alert marked cancel is a previous actual or test announcement that no longer applies. More statuses might be used in the future.\r\n \r\nEach announcement will subsequently have two alerts associated with it. First an actual message will be emitted. When the announcement no longer applies, the previous message will be replaced by the cancel message. The actual and cancel messages will have different CAP identifiers, but the same incident identifier (beginning with SRVMA).\r\n\r\nEnglish translation of the alert info is not yet released on real api, but can be viewed in the test api. Translated info objects will be added to the alert with a delay.",
+          "parameters": [
+            {
+              "name": "geoCode",
+              "in": "path",
+              "description": "GeoCodes are 2 or 4-digit numbers representing areas in Sweden, <a href=\"https://www.scb.se/hitta-statistik/regional-statistik-och-kartor/regionala-indelningar/lan-och-kommuner/lan-och-kommuner-i-kodnummerordning\">as specified by SCB</a>. If the geocode is releated to a Swedish counties (län) it has two digits. When supplying a county geocode, you will also get alerts for all Swedish municipalities (kommuner) within the county.",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "example": "00"
+            },
+            {
+              "name": "ext",
+              "in": "query",
+              "description": "The default format for alerts is: json. Supported extensions are: rss, atom, json, xml",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "This call should always return 200 OK and contain valid content.",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/TestApi/v2/alerts/{geoCode}/index.{ext}": {
+        "get": {
+          "tags": [
+            "TestApi"
+          ],
+          "summary": "Get a list of all current alerts",
+          "description": " When using the formats .json or .xml, all content about the alerts will be included in the result.\r\n \r\nWhen using the format .atom or.rss, the result will include basic information about the respective alert, along with a link to the full message in CAP format.\r\n\r\nIt is important to check the alert status. An alert marked actual is an actual, currently active important public announcement. An alert marked test is an active test announcement. An alert marked cancel is a previous actual or test announcement that no longer applies. More statuses might be used in the future.\r\n \r\nEach announcement will subsequently have two alerts associated with it. First an actual message will be emitted. When the announcement no longer applies, the previous message will be replaced by the cancel message. The actual and cancel messages will have different CAP identifiers, but the same incident identifier (beginning with SRVMA).\r\n\r\nEnglish translation of the alert info is not yet released on real api, but can be viewed in the test api. Translated info objects will be added to the alert with a delay.",
+          "parameters": [
+            {
+              "name": "geoCode",
+              "in": "path",
+              "description": "GeoCodes are 2 or 4-digit numbers representing areas in Sweden, <a href=\"https://www.scb.se/hitta-statistik/regional-statistik-och-kartor/regionala-indelningar/lan-och-kommuner/lan-och-kommuner-i-kodnummerordning\">as specified by SCB</a>. If the geocode is releated to a Swedish counties (län) it has two digits. When supplying a county geocode, you will also get alerts for all Swedish municipalities (kommuner) within the county.",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "example": "00"
+            },
+            {
+              "name": "ext",
+              "in": "path",
+              "description": "The default format for alerts is: json. Supported extensions are: rss, atom, json, xml",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "This call should always return 200 OK and contain valid content.",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/TestApi/v2/cap/{identifier}": {
+        "get": {
+          "tags": [
+            "TestApi"
+          ],
+          "summary": "Returns the matching CAP Alert/Cancel message.",
+          "parameters": [
+            {
+              "name": "identifier",
+              "in": "path",
+              "description": "Identifier is used to match on the value given in the Identifier or Incidents fields.\r\n\r\nIdentifiers look like this: SRCAPXXXXXXXXXXXXXXI, where all X:es have been replaced by digits. The identifier is used to match on the value given in the Identifier or Incidents fields.",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the matching CAP Alert/Cancel message. Content will be of type application/cap+xml.",
+              "content": {
+                "application/cap+xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Alert"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "If the identifier is invalid or not found, 404 will be returned."
+            }
+          }
+        }
+      },
+      "/TestApi/v2/examples/data": {
+        "get": {
+          "tags": [
+            "TestApi"
+          ],
+          "summary": "Get a static list of alerts for development purposes.",
+          "description": "This endpoint will only return static json data for development purposes.\r\n\r\nThe response will contain five example alerts in this order; one active alert with translation, one active alert without translation, one closed alert, one active technical test, one closed technical test.",
+          "responses": {
+            "200": {
+              "description": "This call should always return 200 OK and contain valid static content.",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "application/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                },
+                "text/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VmaAlerts"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Alert": {
+          "type": "object",
+          "properties": {
+            "identifier": {
+              "type": "string",
+              "description": "",
+              "nullable": true,
+              "example": "SRCAP20240429172709I"
+            },
+            "sender": {
+              "type": "string",
+              "description": "",
+              "nullable": true,
+              "example": "https://vmaapi.sr.se/api/v2"
+            },
+            "sent": {
+              "type": "string",
+              "description": "The time when the alert was sent out, in local time. If msgType is Cancel or Update this reflects the time for the cancellation or update.",
+              "nullable": true,
+              "example": "2024-04-29T17:27:09+02:00"
+            },
+            "status": {
+              "type": "string",
+              "description": "Will be \"Actual\" for real alerts and \"Test\" for test alerts. More statuses (like \"Exercise\") may be used in the future.",
+              "nullable": true,
+              "example": "Actual"
+            },
+            "msgType": {
+              "type": "string",
+              "description": "Will be \"Alert\" for a currently active important public announcement, and \"Cancel\" for a previous announcement that no longer applies. More msgTypes (like \"Update\") may be used in the future.",
+              "nullable": true,
+              "example": "Alert"
+            },
+            "scope": {
+              "type": "string",
+              "description": "",
+              "nullable": true,
+              "example": "Public"
+            },
+            "references": {
+              "type": "string",
+              "description": "The extended message identifier (in the form sender,identifier,sent) of an earlier alert referenced in this alert (canceled or updated). Will be null if no reference exist. If multiple references, they are separated by whitespace.",
+              "nullable": true,
+              "example": "https://vmaapi.sr.se/api/v2,SRCAP20240808162955T,2024-08-08T14:29:55+02:00"
+            },
+            "incidents": {
+              "type": "string",
+              "description": "If multiple incidents, they are separated by whitespace.",
+              "nullable": true,
+              "example": "SRVMA20240429172709I"
+            },
+            "info": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Info"
+              },
+              "description": "An array of Info objects. Will be null if the status of the alert is \"Cancel\".",
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "Area": {
+          "type": "object",
+          "properties": {
+            "areaDesc": {
+              "type": "string",
+              "description": "Human readable description of the area.",
+              "nullable": true,
+              "example": "Bromölla kommun (Skåne län)"
+            },
+            "geocode": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Geocode"
+              },
+              "description": "An array of Geocode objects. When the AreaDesc is the whole of Sweden (\"Hela landet\") this array will be empty.",
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "Geocode": {
+          "type": "object",
+          "properties": {
+            "valueName": {
+              "type": "string",
+              "description": "Can be \"Kommun\" or \"Län\".",
+              "nullable": true,
+              "example": "Kommun"
+            },
+            "value": {
+              "type": "string",
+              "description": "The geocode of the affected area. GeoCodes are 2 or 4-digit numbers representing areas in Sweden, <a href=\"https://www.scb.se/hitta-statistik/regional-statistik-och-kartor/regionala-indelningar/lan-och-kommuner/lan-och-kommuner-i-kodnummerordning\">as specified by SCB</a>.",
+              "nullable": true,
+              "example": "1272"
+            }
+          },
+          "additionalProperties": false
+        },
+        "Info": {
+          "type": "object",
+          "properties": {
+            "language": {
+              "type": "string",
+              "description": "Can be \"sv-SE\" or \"en-US\". Natural language identifier per [RFC 3066]. More language identifiers may be used in the future.",
+              "nullable": true,
+              "example": "sv-SE"
+            },
+            "category": {
+              "type": "string",
+              "description": "",
+              "nullable": true,
+              "example": "Safety"
+            },
+            "event": {
+              "type": "string",
+              "description": "",
+              "nullable": true,
+              "example": "Viktigt meddelande till allmänheten (VMA)"
+            },
+            "urgency": {
+              "type": "string",
+              "description": "",
+              "nullable": true,
+              "example": "Immediate"
+            },
+            "severity": {
+              "type": "string",
+              "description": "",
+              "nullable": true,
+              "example": "Severe"
+            },
+            "certainty": {
+              "type": "string",
+              "description": "",
+              "nullable": true,
+              "example": "Observed"
+            },
+            "senderName": {
+              "type": "string",
+              "description": "The issuer of this alert.",
+              "nullable": true,
+              "example": "Sveriges Radio"
+            },
+            "description": {
+              "type": "string",
+              "description": "Contains the alert description.",
+              "nullable": true,
+              "example": "Viktigt meddelande till allmänheten i Bromölla kommun, Skåne län.\\r\\n\\r\\nDet brinner kraftigt i en industribyggnad.\\r\\n\\r\\nRäddningsledaren uppmanar alla i området att gå inomhus och stänga dörrar, fönster och ventilation.\\r\\n\\r\\nFör mer information lyssna på Sveriges Radio P4 Kristianstad."
+            },
+            "web": {
+              "type": "string",
+              "description": "Link to a page with information in Swedish about what a VMA is.",
+              "nullable": true,
+              "example": "https://sverigesradio.se/artikel/vma-vad-ar-det"
+            },
+            "area": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Area"
+              },
+              "description": "An array of Area objects.",
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "VmaAlerts": {
+          "type": "object",
+          "properties": {
+            "timestamp": {
+              "type": "string",
+              "description": "Last update of the api in local time.",
+              "nullable": true,
+              "example": "2024-05-16T12:53:52+02:00"
+            },
+            "alerts": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Alert"
+              },
+              "description": "An array of alerts. The array will be empty when there are no active alerts.",
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  }

@@ -1,0 +1,5 @@
+{
+  "name": "VMA Alert",
+  "render_readme": true,
+  "homeassistant": "2023.3.0"
+}
