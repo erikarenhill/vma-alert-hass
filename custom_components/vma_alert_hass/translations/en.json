@@ -31,6 +31,14 @@
       },
       "active_vma_alerts": {
         "name": "Active VMA Alerts"
+      },
+      "vma_last_update": {
+        "name": "VMA Last Update"
+      }
+    },
+    "switch": {
+      "vma_test_mode": {
+        "name": "VMA Test Mode"
       }
     }
   }
