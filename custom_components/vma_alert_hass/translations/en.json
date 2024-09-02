@@ -1,0 +1,37 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up VMA Alert",
+        "description": "Configure the VMA Alert integration. The default polling interval is {default_interval} seconds.",
+        "data": {
+          "poll_interval": "Polling interval (seconds)"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "poll_interval": "Polling interval (seconds)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "vma_alert": {
+        "name": "VMA Alert",
+        "state_attributes": {
+          "sent": "Sent",
+          "description": "Description",
+          "area": "Area"
+        }
+      },
+      "active_vma_alerts": {
+        "name": "Active VMA Alerts"
+      }
+    }
+  }
+}

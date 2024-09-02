@@ -1,0 +1,37 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Konfigurera VMA Alert",
+        "description": "Konfigurera VMA Alert-integrationen. Standardintervallet för uppdatering är {default_interval} sekunder.",
+        "data": {
+          "poll_interval": "Uppdateringsintervall (sekunder)"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "poll_interval": "Uppdateringsintervall (sekunder)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "vma_alert": {
+        "name": "VMA Varning",
+        "state_attributes": {
+          "sent": "Skickad",
+          "description": "Beskrivning",
+          "area": "Område"
+        }
+      },
+      "active_vma_alerts": {
+        "name": "Aktiva VMA Varningar"
+      }
+    }
+  }
+}
