@@ -55,6 +55,7 @@ Set up a new automation with trigger EVENT, type in "vma_new_alert" and leave th
 
 On actions, add a notification, then move over to manual yaml editing mode and copy paste this:
 
+```
 data:
   title: 'VMA Alert: {{ trigger.event.data.info[0].event }}'
   message: >
@@ -64,6 +65,7 @@ data:
     trigger.event.data.info[0].certainty }} Affected Area: {{
     trigger.event.data.info[0].area[0].areaDesc }}
 action: notify.YOUR_NOTIFICATION_SERVICE_HERE # <--------- dont forget to change this
+```
 
 ## HOW TO TEST
 
