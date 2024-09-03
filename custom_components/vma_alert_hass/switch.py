@@ -40,10 +40,8 @@ class VMATestModeSwitch(VMAEntity, SwitchEntity):
         """Turn on test mode."""
         _LOGGER.debug("Turning on VMA Test Mode")
         await self.coordinator.set_test_mode(True)
-        _LOGGER.info("VMA Test Mode turned on")
 
     async def async_turn_off(self, **kwargs):
         """Turn off test mode."""
         _LOGGER.debug("Turning off VMA Test Mode")
         await self.coordinator.set_test_mode(False)
-        _LOGGER.info("VMA Test Mode turned off")
