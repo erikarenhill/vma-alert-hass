@@ -28,8 +28,9 @@ class VMATestModeSwitch(VMAEntity, SwitchEntity):
     def __init__(self, coordinator, config_entry):
         """Initialize the switch."""
         super().__init__(coordinator, config_entry)
-        self._attr_name = "VMA Test Mode"
-        self._attr_unique_id = f"{DOMAIN}_test_mode"
+        self._attr_name = f"VMA Test Mode - {coordinator.area_name}"
+        self._attr_unique_id = f"{DOMAIN}_{coordinator.geo_code}_test_mode"
+        _LOGGER.debug("Initialized VMATestModeSwitch for area: %s with unique_id: %s", coordinator.area_name, self._attr_unique_id)
 
     @property
     def is_on(self):
@@ -38,10 +39,10 @@ class VMATestModeSwitch(VMAEntity, SwitchEntity):
 
     async def async_turn_on(self, **kwargs):
         """Turn on test mode."""
-        _LOGGER.debug("Turning on VMA Test Mode")
+        _LOGGER.debug("Turning on VMA Test Mode for %s", self._attr_name)
         await self.coordinator.set_test_mode(True)
 
     async def async_turn_off(self, **kwargs):
         """Turn off test mode."""
-        _LOGGER.debug("Turning off VMA Test Mode")
+        _LOGGER.debug("Turning off VMA Test Mode for %s", self._attr_name)
         await self.coordinator.set_test_mode(False)

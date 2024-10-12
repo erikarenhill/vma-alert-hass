@@ -15,18 +15,21 @@ class VMACountSensor(VMAEntity, SensorEntity):
     def __init__(self, coordinator: VMADataUpdateCoordinator, config_entry: ConfigEntry):
         """Initialize the sensor."""
         super().__init__(coordinator, config_entry)
-        self._attr_name = "Active VMA Alerts"
-        self._attr_unique_id = f"{DOMAIN}_active_alert_count"
+        self._attr_name = f"Active VMA Alerts - {coordinator.area_name}"
+        self._attr_unique_id = f"{DOMAIN}_{coordinator.geo_code}_active_alert_count"
+        _LOGGER.debug("Initialized VMACountSensor for area: %s with unique_id: %s", coordinator.area_name, self._attr_unique_id)
 
     @property
     def state(self):
         """Return the number of active VMA alerts."""
-        return len(self.coordinator.data["active_alerts"])
+        count = len(self.coordinator.data["active_alerts"])
+        _LOGGER.debug("Active alert count for %s: %d", self._attr_name, count)
+        return count
 
     @property
     def extra_state_attributes(self):
         """Return the state attributes."""
-        return {
+        attributes = {
             "alerts": [
                 {
                     "identifier": alert["identifier"],
@@ -37,3 +40,5 @@ class VMACountSensor(VMAEntity, SensorEntity):
                 for alert in self.coordinator.data["active_alerts"]
             ]
         }
+        _LOGGER.debug("Extra state attributes for %s: %s", self._attr_name, attributes)
+        return attributes

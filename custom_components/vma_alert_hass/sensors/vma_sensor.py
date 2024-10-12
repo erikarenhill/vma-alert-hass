@@ -15,15 +15,16 @@ class VMASensor(VMAEntity, SensorEntity):
     def __init__(self, coordinator: VMADataUpdateCoordinator, config_entry: ConfigEntry):
         """Initialize the sensor."""
         super().__init__(coordinator, config_entry)
-        self._attr_name = "VMA Alert"
-        self._attr_unique_id = f"{DOMAIN}_latest_alert"
+        self._attr_name = f"VMA Alert - {coordinator.area_name}"
+        self._attr_unique_id = f"{DOMAIN}_{coordinator.geo_code}_latest_alert"
+        _LOGGER.debug("Initialized VMASensor for area: %s with unique_id: %s", coordinator.area_name, self._attr_unique_id)
 
     @property
     def state(self):
         """Return the state of the sensor."""
         latest_alert = self.coordinator.data["latest_alert"]
 
-        _LOGGER.debug("Latest alert data: %s", latest_alert)
+        _LOGGER.debug("Latest alert data for %s: %s", self._attr_name, latest_alert)
         
         return latest_alert["identifier"] if latest_alert else "No active alerts"
 
@@ -32,9 +33,12 @@ class VMASensor(VMAEntity, SensorEntity):
         """Return the state attributes."""
         latest_alert = self.coordinator.data["latest_alert"]
         if latest_alert:
-            return {
+            attributes = {
                 "sent": latest_alert["sent"],
                 "description": latest_alert["info"][0]["description"],
                 "area": latest_alert["info"][0]["area"][0]["areaDesc"],
             }
+            _LOGGER.debug("Extra state attributes for %s: %s", self._attr_name, attributes)
+            return attributes
+        _LOGGER.debug("No extra state attributes for %s (no active alerts)", self._attr_name)
         return {}
